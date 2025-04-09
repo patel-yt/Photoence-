@@ -1,0 +1,9 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/># quality_check.py
+def calculate_iqa(original, enhanced):
+    from piq import psnr, ssim, fid
+    
+    return {
+        'psnr': psnr(original, enhanced),
+        'ssim': ssim(original, enhanced),
+        'fid': fid(original, enhanced)
+    }

@@ -1,0 +1,17 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/>// lib/enhance.js
+export async function enhanceImage(file) {
+  try {
+    // First try WebGPU
+    const localResult = await clientSideEnhance(file);
+    
+    // Fallback to edge AI if WebGPU fails
+    return localResult || await fetch('/api/enhance', {
+      method: 'POST',
+      body: file
+    });
+    
+  } catch (error) {
+    // Final fallback to Cloudflare
+    return await cloudflareEnhance(file);
+  }
+}

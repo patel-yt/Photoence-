@@ -1,0 +1,7 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/># Convert to WebGPU format
+tensorflowjs_converter \
+  --input_format=tf_saved_model \
+  --quantize_float16 \
+  --enable_webgpu \
+  --skip_op_check \
+  ./model ./webgpu_model

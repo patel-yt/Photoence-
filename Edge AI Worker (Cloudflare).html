@@ -1,0 +1,20 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/>// worker.js
+import { Ai } from '@cloudflare/ai';
+
+export default {
+  async fetch(request, env) {
+    const ai = new Ai(env.AI);
+    const img = await request.arrayBuffer();
+    
+    // Multi-model pipeline
+    const steps = {
+      upscale: await ai.run('@cf/tencentarc/real-esrgan', { image: img }),
+      enhance: await ai.run('@cf/tencentarc/gfpgan', { image: upscale.result }),
+      colorize: await ai.run('@cf/akasha/colorize', { image: enhance.result })
+    };
+
+    return new Response(await steps.colorize.result.arrayBuffer(), {
+      headers: { 'Content-Type': 'image/png' }
+    });
+  }
+}

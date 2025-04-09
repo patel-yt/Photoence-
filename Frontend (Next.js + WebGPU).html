@@ -1,0 +1,23 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/>// components/Enhancer.js
+import { useWebGPU } from '@webgpu/react';
+import * as tf from '@tensorflow/tfjs';
+
+export default function Enhancer() {
+  const { adapter, device } = useWebGPU();
+  const [model, setModel] = useState(null);
+
+  useEffect(() => {
+    tf.setBackend('webgpu').then(async () => {
+      const MODEL_URL = 'https://tfhub.dev/tencentarc/gfpgan/quant16';
+      const loadedModel = await tf.loadGraphModel(MODEL_URL, {
+        weightsPathPrefix: '/models/',
+        requestInit: { cache: 'force-cache' }
+      });
+      setModel(loadedModel);
+    });
+  }, []);
+
+  const enhance = async (imageTensor) => {
+    return model.executeAsync(imageTensor);
+  };
+}

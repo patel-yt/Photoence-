@@ -1,0 +1,9 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/>// Quality aware enhancement
+async function enhanceWithRetry(image, attempts=3) {
+  let result;
+  for(let i=0; i<attempts; i++) {
+    result = await enhance(image);
+    if(calculateQuality(image, result) > 0.9) break;
+  }
+  return result;
+}

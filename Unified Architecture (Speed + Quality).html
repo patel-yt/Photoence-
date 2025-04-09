@@ -1,0 +1,11 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/>graph TD
+    A[Browser] -->|WebGPU| B(Client-Side AI)
+    A -->|Edge Caching| C[Cloudflare]
+    B --> D{Local GPU}
+    C -->|Optimized Models| E[Cloudflare Workers AI]
+    E --> F[Stable Diffusion XL Turbo]
+    E --> G[Real-ESRGAN x4]
+    E --> H[CodeFormer]
+    A -->|Auth| I[Supabase]
+    I --> J[PostgreSQL]
+    A -->|Storage| K[IPFS+Filecoin]
